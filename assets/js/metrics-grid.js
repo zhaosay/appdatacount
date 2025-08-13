@@ -8,7 +8,7 @@ let metricsData = [];
 async function showMetricsModal(workId) {
     currentWorkId = workId;
     
-    const work = currentWorks.find(w => w.id === workId);
+    const work = currentWorks.find(w => parseInt(w.id) === parseInt(workId));
     if (!work) {
         showAlert('作品不存在', 'warning');
         return;
@@ -153,9 +153,8 @@ function renderMetricsGrid(startDate, endDate) {
                     
                     return `
                         <tr id="metrics-row-${date}" ${isToday ? 'class="table-warning"' : ''}>
-                            <td>
-                                <div>${date}</div>
-                                <small class="text-muted">周${dayName}</small>
+                            <td class="date-cell">
+                                <span class="date-text">${date}（周${dayName}）</span>
                             </td>
                             <td>
                                 <input type="number" class="form-control metrics-input" 
@@ -474,7 +473,7 @@ function initializeChart() {
 
 // 重置日期范围
 function resetDateRange() {
-    const work = currentWorks.find(w => w.id === currentWorkId);
+    const work = currentWorks.find(w => parseInt(w.id) === parseInt(currentWorkId));
     if (work) {
         const workDate = new Date(work.created_at);
         const today = new Date();

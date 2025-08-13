@@ -21,6 +21,23 @@ function setupEventListeners() {
     // 日期筛选
     document.getElementById('startDate').addEventListener('change', filterWorks);
     document.getElementById('endDate').addEventListener('change', filterWorks);
+    
+    // 设置默认日期为当天
+    setDefaultDates();
+}
+
+// 设置默认日期为当天
+function setDefaultDates() {
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0];
+    
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
+    
+    if (startDateInput && endDateInput) {
+        startDateInput.value = todayStr;
+        endDateInput.value = todayStr;
+    }
 }
 
 // 加载账号分类
@@ -177,7 +194,7 @@ function renderWorksList(works) {
     }
     
     // 获取当前账号信息
-    const currentAccount = allAccounts.find(acc => acc.id === currentAccountId);
+    const currentAccount = allAccounts.find(acc => parseInt(acc.id) === parseInt(currentAccountId));
     const accountName = currentAccount ? currentAccount.name : '未知账号';
     
     const html = `
@@ -204,25 +221,25 @@ function renderWorksList(works) {
                         <div class="work-card-content">
                             <h6 class="work-title">${work.title}</h6>
                             <div class="work-publish-time mb-2">
-                                <small class="text-muted">📅 发布于 ${formatDate(work.published_at || work.created_at)}</small>
+                                <small class="text-muted">${formatDate(work.published_at || work.created_at)}</small>
                             </div>
                             <div class="work-stats mb-3">
-                                <small>👍 ${formatNumber(work.max_likes || 0)}</small>
+                                <small>♥ ${formatNumber(work.max_likes || 0)}</small>
                                 <small>💬 ${formatNumber(work.max_comments || 0)}</small>
-                                <small>📩 ${formatNumber(work.max_messages || 0)}</small>
-                                <small>👀 ${formatNumber(work.max_views || 0)}</small>
+                                <small>✉ ${formatNumber(work.max_messages || 0)}</small>
+                                <small>👁 ${formatNumber(work.max_views || 0)}</small>
                             </div>
                             <div class="work-actions mt-auto">
                                 <div class="d-grid gap-1">
                                     <button class="btn btn-primary btn-sm" onclick="showMetricsModal(${work.id})">
-                                        📊 数据录入
+                                        数据录入
                                     </button>
                                     <div class="d-flex gap-1">
                                         <button class="btn btn-outline-secondary btn-sm flex-fill" onclick="editWork(${work.id})" title="编辑作品">
-                                            ✏️
+                                            编辑
                                         </button>
                                         <button class="btn btn-outline-danger btn-sm flex-fill" onclick="deleteWork(${work.id})" title="删除作品">
-                                            🗑️
+                                            删除
                                         </button>
                                     </div>
                                 </div>
